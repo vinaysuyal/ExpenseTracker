@@ -106,7 +106,6 @@ export default function MiniDrawer() {
   const rows = expenseList.rows;
   const filteredRows = React.useMemo(() => {
     const a = rows.filter((row) => {
-      console.log("Date Changed, Now running function");
       return (
         new Date(row.date) >= new Date(fromDate.$d) &&
         new Date(row.date) <= new Date(toDate.$d)
