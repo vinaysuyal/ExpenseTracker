@@ -1,0 +1,4 @@
+.rangeSelector {
+  display: flex;
+  flex-direction: column;
+}
