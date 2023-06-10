@@ -6,8 +6,8 @@ const ExpenseChartComponent = ({ filteredRows }) => {
     const dataObj = {};
     filteredRows.forEach((row) => {
       dataObj[row.category] = dataObj[row.category]
-        ? dataObj[row.category] + row.amount
-        : row.amount;
+        ? parseInt(dataObj[row.category]) + parseInt(row.amount)
+        : parseInt(row.amount);
     });
     const arr = [[], []];
     if (Object.entries(dataObj).length === 0) return arr;
@@ -43,6 +43,7 @@ const ExpenseChartComponent = ({ filteredRows }) => {
   const barChart = {
     series: [
       {
+        name: "Expense",
         data: data[1],
       },
     ],

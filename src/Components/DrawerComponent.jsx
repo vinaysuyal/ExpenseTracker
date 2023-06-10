@@ -16,11 +16,10 @@ import Toolbar from "@mui/material/Toolbar";
 import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
 import { FromToContext } from "../Context/fromToContext";
-import expenseList from "../Layouts/sampleExpenseList.json";
+import expenseLayout from "../Layouts/sampleExpenseList.json";
 import ExpenseListComponent from "./ExpenseListComponent";
 import TimeRange from "./TimeRange";
-import { CChartPie } from "@coreui/react-chartjs";
-import ExpenseChartComponent from "./ExpenseChartComponent";
+import AddEditCard from "./AddEditCard";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -89,10 +88,15 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+const expenseListPreCursor = localStorage.getItem("expenses")
+  ? JSON.parse(localStorage.getItem("expenses"))
+  : expenseLayout;
+
 export default function MiniDrawer() {
+  const [expenseList, editExpenseList] = React.useState(expenseListPreCursor);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [addEditCardVisible, setAddEditCardVisible] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -112,8 +116,7 @@ export default function MiniDrawer() {
       );
     });
     return a;
-  }, [fromDate, toDate]);
-
+  }, [fromDate, toDate, expenseList]);
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer variant="permanent" open={open}>
@@ -185,10 +188,19 @@ export default function MiniDrawer() {
               color="primary"
               aria-label="add new Item"
               component="label"
+              onClick={() => setAddEditCardVisible(true)}
             >
               <Add fontSize="large" />
               Add new
             </IconButton>
+            <AddEditCard
+              expenseList={expenseList}
+              editExpenseList={(newList) => editExpenseList(newList)}
+              open={addEditCardVisible}
+              setOpen={(value) => {
+                setAddEditCardVisible(value);
+              }}
+            />
             <TimeRange />
           </div>
         </DrawerHeader>
