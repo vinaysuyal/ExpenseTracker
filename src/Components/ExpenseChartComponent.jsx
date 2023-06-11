@@ -86,6 +86,7 @@ const ExpenseChartComponent = ({ filteredRows }) => {
         width: "100%",
         justifyContent: "space-around",
         flexWrap: "wrap",
+        marginTop: "150px",
       }}
     >
       <Card
