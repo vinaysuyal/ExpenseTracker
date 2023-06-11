@@ -1,7 +1,7 @@
 import { Card, MenuItem, Select } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import FromToComponent from "./FromToComponent";
 import { FromToContext } from "../Context/fromToContext";
+import FromToComponent from "./FromToComponent";
 import "./TimeRange.css";
 
 function TimeRange(props) {
@@ -43,9 +43,7 @@ function TimeRange(props) {
           <MenuItem value={"week"}>This Week</MenuItem>
           <MenuItem value={"custom"}>Select Custom Range</MenuItem>
         </Select>
-        {timeRangeType === "custom" && (
-          <FromToComponent fromToContext={fromToContext} />
-        )}
+        {timeRangeType === "custom" && <FromToComponent />}
       </div>
     </Card>
   );

@@ -13,7 +13,7 @@ const ExpenseListComponent = ({ filteredRows }) => {
     >
       <ExpenseChartComponent filteredRows={filteredRows} />
       <DataGrid
-        sx={{ maxWidth: "80vw" }}
+        sx={{ maxWidth: "80vw", minWidth: "60vw" }}
         rows={filteredRows}
         columns={expenseList.columns}
         initialState={{

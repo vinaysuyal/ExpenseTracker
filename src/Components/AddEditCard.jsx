@@ -1,22 +1,18 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import {
   FormControl,
-  Input,
-  InputAdornment,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
   TextField,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
+import * as React from "react";
 
 const style = {
   position: "absolute",
@@ -143,7 +139,21 @@ export default function AddEditCard({
               <DatePicker
                 value={cardState.date}
                 onChange={(date) => {
-                  handleChange({ target: { value: dayjs(date) } }, "date");
+                  handleChange(
+                    {
+                      target: {
+                        value: new Date(dayjs(date))
+                          .toLocaleDateString("en-US", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                          .split("/")
+                          .join("-"),
+                      },
+                    },
+                    "date"
+                  );
                 }}
                 label="Date"
                 format="DD-MMM-YYYY"

@@ -3,7 +3,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -17,9 +16,9 @@ import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
 import { FromToContext } from "../Context/fromToContext";
 import expenseLayout from "../Layouts/sampleExpenseList.json";
+import AddEditCard from "./AddEditCard";
 import ExpenseListComponent from "./ExpenseListComponent";
 import TimeRange from "./TimeRange";
-import AddEditCard from "./AddEditCard";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -111,8 +110,10 @@ export default function MiniDrawer() {
   const filteredRows = React.useMemo(() => {
     const a = rows.filter((row) => {
       return (
-        new Date(row.date) >= new Date(fromDate.$d) &&
-        new Date(row.date) <= new Date(toDate.$d)
+        new Date(new Date(row.date).setHours(12, 0, 0, 0)) >=
+          new Date(new Date(fromDate.$d).setHours(12, 0, 0, 0)) &&
+        new Date(new Date(row.date).setHours(12, 0, 0, 0)) <=
+          new Date(new Date(toDate.$d).setHours(12, 0, 0, 0))
       );
     });
     return a;
@@ -187,8 +188,31 @@ export default function MiniDrawer() {
         <Divider />
       </Drawer>
 
-      <ExpenseListComponent filteredRows={filteredRows} />
-      <div style={{ position: "absolute", top: "0", right: "0" }}>
+      {filteredRows.length > 0 && (
+        <ExpenseListComponent filteredRows={filteredRows} />
+      )}
+
+      <div
+        style={
+          filteredRows.length > 0
+            ? {
+                marginTop: 2,
+                position: "absolute",
+                top: "0",
+                right: "0",
+              }
+            : {
+                marginTop: 2,
+                position: "absolute",
+                top: "40vh",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }
+        }
+      >
+        {filteredRows.length === 0 && (
+          <h3>No expenses tracked yet. Click on new button to get started.</h3>
+        )}
         <IconButton
           sx={{ borderRadius: 0 }}
           color="primary"

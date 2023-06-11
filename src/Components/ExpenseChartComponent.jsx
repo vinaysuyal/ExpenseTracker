@@ -84,7 +84,7 @@ const ExpenseChartComponent = ({ filteredRows }) => {
       style={{
         display: "flex",
         width: "100%",
-        justifyContent: "space-around",
+        justifyContent: "center",
         flexWrap: "wrap",
         marginTop: "150px",
       }}
