@@ -118,8 +118,14 @@ export default function MiniDrawer() {
     return a;
   }, [fromDate, toDate, expenseList]);
   return (
-    <Box sx={{ display: "flex" }}>
-      <Drawer variant="permanent" open={open}>
+    // < sx={{ display: "flex", maxWidth: "100%" }}>"
+    <div
+      style={{
+        position: "relative",
+        display: "flex",
+      }}
+    >
+      <Drawer sx={{ maxWidth: "100%" }} variant="permanent" open={open}>
         {!open && (
           <Toolbar>
             <IconButton
@@ -180,32 +186,29 @@ export default function MiniDrawer() {
         </List>
         <Divider />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1 }}>
-        <DrawerHeader>
-          <div>
-            <IconButton
-              sx={{ borderRadius: 0 }}
-              color="primary"
-              aria-label="add new Item"
-              component="label"
-              onClick={() => setAddEditCardVisible(true)}
-            >
-              <Add fontSize="large" />
-              Add new
-            </IconButton>
-            <AddEditCard
-              expenseList={expenseList}
-              editExpenseList={(newList) => editExpenseList(newList)}
-              open={addEditCardVisible}
-              setOpen={(value) => {
-                setAddEditCardVisible(value);
-              }}
-            />
-            <TimeRange />
-          </div>
-        </DrawerHeader>
-        <ExpenseListComponent filteredRows={filteredRows} />
-      </Box>
-    </Box>
+
+      <ExpenseListComponent filteredRows={filteredRows} />
+      <div style={{ position: "absolute", top: "0", right: "0" }}>
+        <IconButton
+          sx={{ borderRadius: 0 }}
+          color="primary"
+          aria-label="add new Item"
+          component="label"
+          onClick={() => setAddEditCardVisible(true)}
+        >
+          <Add fontSize="large" />
+          Add new
+        </IconButton>
+        <TimeRange />
+      </div>
+      <AddEditCard
+        expenseList={expenseList}
+        editExpenseList={(newList) => editExpenseList(newList)}
+        open={addEditCardVisible}
+        setOpen={(value) => {
+          setAddEditCardVisible(value);
+        }}
+      />
+    </div>
   );
 }

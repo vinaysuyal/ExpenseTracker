@@ -80,16 +80,34 @@ const ExpenseChartComponent = ({ filteredRows }) => {
     },
   };
   return (
-    <div style={{ display: "flex", justifyContent: "flex-start" }}>
-      <Card sx={{ margin: 5 }}>
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        justifyContent: "space-around",
+        flexWrap: "wrap",
+      }}
+    >
+      <Card
+        sx={{
+          margin: 5,
+          maxWidth: "fit-content",
+        }}
+      >
         <ReactApexChart
           options={pieChart.options}
           series={pieChart.series}
           type="pie"
-          width={380}
+          height={400}
+          width={400}
         />
       </Card>
-      <Card sx={{ margin: 5 }}>
+      <Card
+        sx={{
+          margin: 5,
+          maxWidth: "fit-content",
+        }}
+      >
         <ReactApexChart
           options={barChart.options}
           series={barChart.series}

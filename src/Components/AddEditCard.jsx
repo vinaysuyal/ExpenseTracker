@@ -146,7 +146,6 @@ export default function AddEditCard({
                   handleChange({ target: { value: dayjs(date) } }, "date");
                 }}
                 label="Date"
-                maxDate={cardState.date}
                 format="DD-MMM-YYYY"
                 disableFuture
               />
