@@ -211,7 +211,9 @@ export default function MiniDrawer() {
         }
       >
         {filteredRows.length === 0 && (
-          <h3>No expenses tracked yet. Click on new button to get started.</h3>
+          <h3>
+            No expenses tracked yet. Click on the new button to get started.
+          </h3>
         )}
         <IconButton
           sx={{ borderRadius: 0 }}
