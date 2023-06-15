@@ -52,7 +52,6 @@ const AuthContextProvider = (props) => {
     setLoggedInUser(loggedInUser);
     localStorage.setItem("authToken", authToken);
   };
-  console.log(isUserLoggedIn);
   return (
     <AuthContext.Provider
       value={{

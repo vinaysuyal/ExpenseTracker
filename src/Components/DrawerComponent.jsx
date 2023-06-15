@@ -87,22 +87,45 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const expenseListPreCursor = localStorage.getItem("expenses")
-  ? JSON.parse(localStorage.getItem("expenses"))
-  : expenseLayout;
-
 export default function MiniDrawer() {
-  const [expenseList, editExpenseList] = React.useState(expenseListPreCursor);
+  const [expenseList, editExpenseList] = React.useState(expenseLayout);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [addEditCardVisible, setAddEditCardVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+  React.useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "jwt " + localStorage.getItem("authToken")
+    );
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/transaction/getExpenses", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const expenseData = { ...expenseLayout, rows: result };
+        editExpenseList(expenseData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  }, []);
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  console.log(loading);
   const fromToContext = React.useContext(FromToContext);
   const fromDate = fromToContext.fromDate;
   const toDate = fromToContext.toDate;
@@ -117,7 +140,7 @@ export default function MiniDrawer() {
       );
     });
     return a;
-  }, [fromDate, toDate, expenseList]);
+  }, [fromDate, toDate, rows]);
   return (
     // < sx={{ display: "flex", maxWidth: "100%" }}>"
     <div
@@ -192,41 +215,43 @@ export default function MiniDrawer() {
         <ExpenseListComponent filteredRows={filteredRows} />
       )}
 
-      <div
-        style={
-          filteredRows.length > 0
-            ? {
-                marginTop: 2,
-                position: "absolute",
-                top: "0",
-                right: "0",
-              }
-            : {
-                marginTop: 2,
-                position: "absolute",
-                top: "40vh",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }
-        }
-      >
-        {filteredRows.length === 0 && (
-          <h3>
-            No expenses tracked yet. Click on the new button to get started.
-          </h3>
-        )}
-        <IconButton
-          sx={{ borderRadius: 0 }}
-          color="primary"
-          aria-label="add new Item"
-          component="label"
-          onClick={() => setAddEditCardVisible(true)}
+      {!loading && (
+        <div
+          style={
+            filteredRows.length > 0
+              ? {
+                  marginTop: 2,
+                  position: "absolute",
+                  top: "0",
+                  right: "0",
+                }
+              : {
+                  marginTop: 2,
+                  position: "absolute",
+                  top: "40vh",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }
+          }
         >
-          <Add fontSize="large" />
-          Add new
-        </IconButton>
-        <TimeRange />
-      </div>
+          {filteredRows.length === 0 && (
+            <h3>
+              No expenses tracked yet. Click on the new button to get started.
+            </h3>
+          )}
+          <IconButton
+            sx={{ borderRadius: 0 }}
+            color="primary"
+            aria-label="add new Item"
+            component="label"
+            onClick={() => setAddEditCardVisible(true)}
+          >
+            <Add fontSize="large" />
+            Add new
+          </IconButton>
+          <TimeRange />
+        </div>
+      )}
       <AddEditCard
         expenseList={expenseList}
         editExpenseList={(newList) => editExpenseList(newList)}

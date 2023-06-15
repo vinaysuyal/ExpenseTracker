@@ -9,7 +9,6 @@ import FromToContextProvider from "./Context/fromToContext";
 
 function App() {
   const authContext = useContext(AuthContext);
-  console.log(authContext);
   return (
     <FromToContextProvider>
       <div style={{ display: "flex", flexDirection: "column" }} className="App">

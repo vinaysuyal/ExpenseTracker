@@ -48,6 +48,35 @@ export default function AddEditCard({
       [field]: event.target.value,
     }));
   };
+
+  const save = (cardState) => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "jwt " + localStorage.getItem("authToken")
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify(cardState);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/transaction/add", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const newExpenseList = {
+          columns: expenseList.columns,
+          rows: [...expenseList.rows, result],
+        };
+        editExpenseList(newExpenseList);
+      })
+      .catch((error) => console.log("error", error));
+  };
   const categories = [
     "Food",
     "Utilities",
@@ -177,15 +206,7 @@ export default function AddEditCard({
                 !!cardState.description &&
                 !!cardState.name
               ) {
-                const newExpenseList = {
-                  columns: expenseList.columns,
-                  rows: [...expenseList.rows, cardState],
-                };
-                editExpenseList(newExpenseList);
-                localStorage.setItem(
-                  "expenses",
-                  JSON.stringify(newExpenseList)
-                );
+                save(cardState);
                 setOpen(false);
                 setCardState({
                   category: "",
